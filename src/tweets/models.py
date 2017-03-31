@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 from .validators import validate_content
 
@@ -17,6 +18,9 @@ class Tweet(models.Model):
     # Kind of title in the admin pages
     def __str__(self):
         return self.content
+
+    def get_absolute_url(self):
+        return reverse("tweet:detail", kwargs={"pk":self.pk})
 
     # Build in Validation
     # def clean(self, *args, **kwargs):
