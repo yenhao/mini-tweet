@@ -1,13 +1,19 @@
-{% include "tweets/tweet_search.html" %}
+{% extends "base.html" %}
 
-{% for object in object_list %}
-    <p>{{ object.content }}<br/>
-    <i>- {{ object.user }}</i><br/>
-    {{ object.timestamp|timesince }} ago</p>
-{% empty %}
-	{% if request.GET.q %}
-	<p>No tweets found!</p>
-	{% else %}
-	<p>No tweets yet!</p>
-	{% endif %}
-{% endfor %}
+{% block titile %} {{ block.super }} Tweets {% endblock titile %}
+
+{% block content %}
+    {% include "tweets/tweet_search.html" %}
+
+    {% for object in object_list %}
+        <p>{{ object.content }}<br/>
+        <i>- {{ object.user }}</i><br/>
+        {{ object.timestamp|timesince }} ago</p>
+    {% empty %}
+        {% if request.GET.q %}
+        <p>No tweets found!</p>
+        {% else %}
+        <p>No tweets yet!</p>
+        {% endif %}
+    {% endfor %}
+{%  endblock content %}

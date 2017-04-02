@@ -1,1 +1,7 @@
-{% include "tweets/function_form.html" with form=form btn_title="Delete" %}
+{% extends "base.html" %}
+
+{% block titile %} {{ block.super }} Tweets {% endblock titile %}
+
+{% block content %}
+	{% include "tweets/function_form.html" with form=form btn_title="Delete" %}
+{% endblock content%}

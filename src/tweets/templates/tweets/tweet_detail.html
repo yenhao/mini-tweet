@@ -1,3 +1,9 @@
-<p>{{ object.content }}<br/><br/>
-<i>- {{ object.user }}</i><br/>
-{{ object.timestamp|timesince }} ago</p>
+{% extends "base.html" %}
+
+{% block titile %} {{ block.super }} Tweets {% endblock titile %}
+
+{% block content %}
+	<p>{{ object.content }}<br/><br/>
+	<i>- {{ object.user }}</i><br/>
+	{{ object.timestamp|timesince }} ago</p>
+{% endblock content %}
