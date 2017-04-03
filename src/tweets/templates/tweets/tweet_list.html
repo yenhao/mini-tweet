@@ -4,16 +4,27 @@
 
 {% block content %}
     {% include "tweets/tweet_search.html" %}
-
-    {% for object in object_list %}
-        <p>{{ object.content }}<br/>
-        <i>- {{ object.user }}</i><br/>
-        {{ object.timestamp|timesince }} ago</p>
-    {% empty %}
-        {% if request.GET.q %}
-        <p>No tweets found!</p>
-        {% else %}
-        <p>No tweets yet!</p>
-        {% endif %}
-    {% endfor %}
+    <div class="row">
+        <div class= "col-sm-8 col-sm-offset-2">
+            {% for object in object_list %}
+            
+                <div class="media">
+                  {% if object.media %}
+                  <img class="d-flex align-self-center mr-3" src="..." alt="Generic placeholder image">
+                  {% endif %}
+                  <div class="media-body">
+                    <p>{{ object.content }}</p>
+                    from <i> {{ object.user }}</i> | {{ object.timestamp|timesince }} ago | <a href="{{ object.get_absolute_url }}"> view </a></p>
+                  </div>
+                </div>
+            <hr/>
+            {% empty %}
+                {% if request.GET.q %}
+                <p>No tweets found!</p>
+                {% else %}
+                <p>No tweets yet!</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {%  endblock content %}
