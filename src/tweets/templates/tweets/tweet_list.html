@@ -3,7 +3,6 @@
 {% block titile %} {{ block.super }} Tweets {% endblock titile %}
 
 {% block content %}
-    {% include "tweets/tweet_search.html" %}
     <div class="row">
         <div class= "col-sm-8 col-sm-offset-2">
             {% for object in object_list %}

@@ -1,10 +1,9 @@
-<div class="row">
-    <div class="col-sm-12 text-center">
-        <form class="form-inline" method='GET' action = '{% url "tweet:list" %}'>
-            <input type="text" name="q" placeholder="Search" value = "{{ request.GET.q }}">
-            <input class="btn btn-primary" type="submit" value="Search">
-        </form>
+<form class="navbar-form navbar-left" method='GET' action = '{% url "tweet:list" %}'>
+    <div class="form-group">
+        <input class= "form-control" type="text" name="q" placeholder="Search" value = "{{ request.GET.q }}">
     </div>
-</div>
-<br/>
+    <input class="btn btn-default" style="display: None;" type="submit" value="Search">
+    
+</form>
+   
 
