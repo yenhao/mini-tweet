@@ -3,8 +3,16 @@
 {% block titile %} {{ block.super }} Tweets {% endblock titile %}
 
 {% block content %}
+
     <div class="row">
+
         <div class= "col-sm-8 col-sm-offset-2">
+            {% if not request.GET.q %}
+            <div class="row">
+                {% include "tweets/function_form.html" with form=create_form action_url=create_url btn_title="Tweet" %}
+            </div>
+            {% endif %}
+            <hr/>
             {% for object in object_list %}
             
                 <div class="media">

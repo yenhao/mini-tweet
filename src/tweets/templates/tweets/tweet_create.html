@@ -3,5 +3,10 @@
 {% block titile %} {{ block.super }} Create Tweets {% endblock titile %}
 
 {% block content %}
-	{% include "tweets/function_form.html" with form=form btn_title="Tweet" %}
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h1>Create Tweets</h1>
+            {% include "tweets/function_form.html" with form=form btn_title="Tweet" %}
+        </div>
+    </div>
 {%  endblock content%}

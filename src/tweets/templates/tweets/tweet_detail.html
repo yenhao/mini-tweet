@@ -3,7 +3,15 @@
 {% block titile %} {{ block.super }} Tweet Detail {% endblock titile %}
 
 {% block content %}
-	<p>{{ object.content }}<br/><br/>
-	<i>- {{ object.user }}</i><br/>
-	{{ object.timestamp|timesince }} ago</p>
+<div class="row">
+    <div class="col-sm-3">
+        <h1>{{ object.user }}</h1>
+    </div>
+    <div class="col-sm-9">
+        <p>{{ object.content }}<br/><br/>
+        
+        {{ object.timestamp|timesince }} ago</p>
+    </div>
+</div>
+    
 {% endblock content %}
