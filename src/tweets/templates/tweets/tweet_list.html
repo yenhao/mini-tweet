@@ -2,7 +2,73 @@
 
 {% block titile %} {{ block.super }} Tweets {% endblock titile %}
 
+{% block script %}
+
+<script type="text/javascript">
+
+    function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function parseTweet(data){
+        if(data == 0){
+            $('#tweet-container').append(
+                '<p>No tweets found!</p>'
+            )
+        }else{
+            $.each(data, function(key, value){
+                var tweet_key = value.key;
+                var tweet_user = value.user;
+                var tweet_content = value.content;
+                $('#tweet-container').append(
+                    '<div class="media">\
+                      <div class="media-body">\
+                        <p>' + tweet_content + '</p>\
+                        from <i>' + tweet_user.username + '</i> |  ago | <a href="#"> view </a></p>\
+                      </div>\
+                    </div>\
+                    <hr/>'
+                )
+            })
+        }
+    }
+
+    $(document).ready(function(){
+        console.log("Document Ready Function Working!");
+
+        var query = getParameterByName('q');
+        $.ajax({
+            url: "/api/tweet/",
+            data:{
+                "q" : query
+            },
+            method: "GET",
+            success: function(data){
+                // console.log(data);
+                parseTweet(data)     
+            },
+            error: function(data){
+                console.log("Error");
+                console.log(data);
+            }
+        })
+    });
+
+</script>
+
+{% endblock script %}
+
 {% block content %}
+
+
 
     <div class="row">
 
@@ -13,7 +79,12 @@
             </div>
             {% endif %}
             <hr/>
-            {% for object in object_list %}
+
+            <div id="tweet-container">
+    
+
+            </div>
+            <!-- {% for object in object_list %}
             
                 <div class="media">
                   {% if object.media %}
@@ -31,7 +102,7 @@
                 {% else %}
                 <p>No tweets yet!</p>
                 {% endif %}
-            {% endfor %}
+            {% endfor %} -->
         </div>
     </div>
 {%  endblock content %}
