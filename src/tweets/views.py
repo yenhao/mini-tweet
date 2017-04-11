@@ -13,7 +13,7 @@ class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
     form_class = TweetModelForm
     template_name = 'tweets/tweet_create.html'
     # success_url = '/tweet/create/'
-    # success_url = reverse_lazy("tweet:detail")
+    success_url = reverse_lazy("tweet:list")
     login_url = '/admin/'
     # def form_valid(self, form):
     #     if self.request.user.is_authenticated():
