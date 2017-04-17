@@ -45,23 +45,56 @@
         console.log("Document Ready Function Working!");
 
         var query = getParameterByName('q');
-        $.ajax({
-            url: "/api/tweet/",
-            data:{
-                "q" : query
-            },
-            method: "GET",
-            success: function(data){
-                // console.log(data);
-                parseTweet(data)     
-            },
-            error: function(data){
-                console.log("Error");
-                console.log(data);
-            }
+
+        function fetchTweets(){
+            console.log("Fetching..");
+            $.ajax({
+                url: "/api/tweet/",
+                data:{
+                    "q" : query
+                },
+                method: "GET",
+                success: function(data){
+                    // console.log(data);
+                    parseTweet(data)     
+                },
+                error: function(data){
+                    console.log("Error");
+                    console.log(data);
+                }
+            })
+        }
+
+        fetchTweets()
+        
+
+
+        $("#tweet-form").submit(function(event){
+            event.preventDefault()
+
+            var this_ = $(this)
+            var formData = this_.serialize()
+
+            $.ajax({
+                url: "/api/tweet/create/",
+                data:formData,
+                method: "POST",
+                success: function(data){
+                    console.log(data)
+                    fetchTweets()  
+                },
+                error: function(data){
+                    console.log("Error")
+                    console.log(data)
+                }
+            })
+
+            
         })
     });
 
+
+    
 </script>
 
 {% endblock script %}
@@ -75,7 +108,7 @@
         <div class= "col-sm-8 col-sm-offset-2">
             {% if not request.GET.q %}
             <div class="row">
-                {% include "tweets/function_form.html" with form=create_form action_url=create_url btn_title="Tweet" %}
+                {% include "tweets/function_form.html" with form=create_form action_url=create_url btn_title="Tweet" form_id='tweet-form' %}
             </div>
             {% endif %}
             <hr/>
