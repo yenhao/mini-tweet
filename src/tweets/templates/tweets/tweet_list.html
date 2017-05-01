@@ -24,15 +24,18 @@
                 '<p>No tweets found!</p>'
             )
         }else{
+            $('#tweet-container').html("");
             $.each(data, function(key, value){
                 var tweet_key = value.key;
                 var tweet_user = value.user;
+                var date_display = value.date_display;
+                var tweet_since = value.timesince;
                 var tweet_content = value.content;
                 $('#tweet-container').append(
                     '<div class="media">\
                       <div class="media-body">\
                         <p>' + tweet_content + '</p>\
-                        from <i>' + tweet_user.username + '</i> |  ago | <a href="#"> view </a></p>\
+                        from <i>' + tweet_user.username + '</i> | ' + tweet_since + ' | <a href="#"> view </a></p>\
                       </div>\
                     </div>\
                     <hr/>'
