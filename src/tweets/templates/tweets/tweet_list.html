@@ -6,6 +6,26 @@
 
 <script type="text/javascript">
 
+    function attachTweets(tweetdata, prepend){
+        var tweet_user = tweetdata.user;
+        var date_display = tweetdata.date_display;
+        var tweet_since = tweetdata.timesince;
+        var tweet_content = tweetdata.content;
+        var tweet_format_html = '<div class="media">\
+                              <div class="media-body">\
+                                <p>' + tweet_content + '</p>\
+                                from <i>' + tweet_user.username + '</i> | ' + tweet_since + ' | <a href="#"> view </a></p>\
+                              </div>\
+                            </div>\
+                            <hr/>';
+        if(prepend == true){
+            $('#tweet-container').prepend(tweet_format_html)
+        }else{
+            $('#tweet-container').append(tweet_format_html)
+        }
+    
+    }
+
     function getParameterByName(name, url) {
         if (!url) {
           url = window.location.href;
@@ -24,22 +44,9 @@
                 '<p>No tweets found!</p>'
             )
         }else{
-            $('#tweet-container').html("");
             $.each(data, function(key, value){
                 var tweet_key = value.key;
-                var tweet_user = value.user;
-                var date_display = value.date_display;
-                var tweet_since = value.timesince;
-                var tweet_content = value.content;
-                $('#tweet-container').append(
-                    '<div class="media">\
-                      <div class="media-body">\
-                        <p>' + tweet_content + '</p>\
-                        from <i>' + tweet_user.username + '</i> | ' + tweet_since + ' | <a href="#"> view </a></p>\
-                      </div>\
-                    </div>\
-                    <hr/>'
-                )
+                attachTweets(value)
             })
         }
     }
@@ -58,8 +65,9 @@
                 },
                 method: "GET",
                 success: function(data){
+                    // attachTweets(data, true)
                     // console.log(data);
-                    parseTweet(data)     
+                    parseTweet(data); 
                 },
                 error: function(data){
                     console.log("Error");
@@ -69,8 +77,30 @@
         }
 
         fetchTweets()
-        
+        var char_limit = 140;
+        var char_current = 0;
 
+        $("#tweet-form").append("<span id='tweet_chars_left'>" + char_limit + "</span>")
+
+        $("#tweet-form textarea").keyup(function(event){
+            var tweetContent = $(this).val()
+            char_current = char_limit - tweetContent.length
+            $("#tweet_chars_left").text(char_current)
+
+            // To change the color of count downer
+            var span_chars = $('#tweet_chars_left')
+            if(char_current > 0){
+                span_chars.removeClass('gray-color')
+                span_chars.removeClass('red-color')
+            }else if(char_current == 0){
+                span_chars.removeClass('red-color')
+                span_chars.addClass('gray-color')
+            }else if(char_current < 0){
+                span_chars.removeClass('gray-color')
+                span_chars.addClass('red-color')
+            }
+            
+        })
 
         $("#tweet-form").submit(function(event){
             event.preventDefault()
@@ -78,20 +108,25 @@
             var this_ = $(this)
             var formData = this_.serialize()
 
-
-            $.ajax({
-                url: "/api/tweet/create/",
-                data:formData,
-                method: "POST",
-                success: function(data){
-                    console.log(data)
-                    fetchTweets()  
-                },
-                error: function(data){
-                    console.log("Error")
-                    console.log(data)
-                }
-            })
+            if(char_current > -1){
+                $.ajax({
+                    url: "/api/tweet/create/",
+                    data:formData,
+                    method: "POST",
+                    success: function(data){
+                        this_.find("input[type=text], textarea").val("")
+                        attachTweets(data, true)
+                        // fetchTweets()  
+                    },
+                    error: function(data){
+                        console.log("Error")
+                        console.log(data)
+                    }
+                })
+            }else{
+                console.log("Can not send, tweet too long.")
+            }
+            
 
             
         })
