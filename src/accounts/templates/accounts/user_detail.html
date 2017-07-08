@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-3" >
+        <h1>{{ object.username }}</h1>
+    </div>
+    <div class="col-sm-9">
+        <h1>Tweets</h1> 
+        <br/>
+        {% for tweets in object.tweet_set.all %}
+        {{ tweets }}
+        <br/>
+        {% endfor %}
+    </div>
+</div>
+    
+{% endblock content %}

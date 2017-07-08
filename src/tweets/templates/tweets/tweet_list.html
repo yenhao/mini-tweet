@@ -14,7 +14,8 @@
         var tweet_format_html = '<div class="media">\
                               <div class="media-body">\
                                 <p>' + tweet_content + '</p>\
-                                from <i>' + tweet_user.username + '</i> | ' + tweet_since + ' | <a href="#"> view </a></p>\
+                                from <i><a href="' + tweet_user.url +'">' + tweet_user.username + '</a></i> | '
+                                + tweet_since + ' | <a href="#"> view </a></p>\
                               </div>\
                             </div>\
                             <hr/>';

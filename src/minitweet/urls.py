@@ -23,8 +23,8 @@ from tweets.views import TweetListView
 from .views import home
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^$', home, name='home'),
     url(r'^$', TweetListView.as_view(), name='home'),
+    url(r'^', include('accounts.urls', namespace = 'profiles')),
     url(r'^tweet/', include('tweets.urls', namespace = 'tweet')),
     url(r'^api/tweet/', include('tweets.api.urls', namespace = 'tweet-api')),
 ]
