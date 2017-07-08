@@ -25,7 +25,7 @@
         }
     
     }
-
+    // get url paramater 
     function getParameterByName(name, url) {
         if (!url) {
           url = window.location.href;
@@ -55,11 +55,17 @@
         console.log("Document Ready Function Working!");
 
         var query = getParameterByName('q');
+        var next_tweets_url;
 
-        function fetchTweets(){
+        function fetchTweets(url){
             console.log("Fetching..");
+            if(!url){
+                fetch_url = "/api/tweet/";
+            }else{
+                fetch_url = next_tweets_url;
+            }
             $.ajax({
-                url: "/api/tweet/",
+                url: fetch_url,
                 data:{
                     "q" : query
                 },
@@ -67,7 +73,12 @@
                 success: function(data){
                     // attachTweets(data, true)
                     // console.log(data);
-                    parseTweet(data); 
+                    parseTweet(data.results); 
+                    if(data.next){
+                        next_tweets_url = data.next;
+                    }else{
+                        $("#load_more_tweets").css("display","none");
+                    }
                 },
                 error: function(data){
                     console.log("Error");
@@ -126,9 +137,13 @@
             }else{
                 console.log("Can not send, tweet too long.")
             }
-            
+        })
 
-            
+        $("#load_more_tweets").bind("click", function(){
+            event.preventDefault()
+            if(next_tweets_url){
+                fetchTweets(next_tweets_url)
+            }
         })
     });
 
@@ -139,9 +154,6 @@
 {% endblock script %}
 
 {% block content %}
-
-
-
     <div class="row">
 
         <div class= "col-sm-8 col-sm-offset-2">
@@ -175,6 +187,7 @@
                 <p>No tweets yet!</p>
                 {% endif %}
             {% endfor %} -->
+            <a href="#" id="load_more_tweets">Load More</a>
         </div>
     </div>
 {%  endblock content %}
